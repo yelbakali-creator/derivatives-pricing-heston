@@ -1,5 +1,7 @@
 # Derivatives Pricing under the Heston Model: Fourier, COS, Monte Carlo, Calibration and Hedging
 
+[![tests](https://github.com/yelbakali-creator/derivatives-pricing-heston/actions/workflows/tests.yml/badge.svg)](https://github.com/yelbakali-creator/derivatives-pricing-heston/actions/workflows/tests.yml)
+
 A from-scratch Python implementation of the Heston stochastic volatility model, the standard benchmark for equity option smiles, validated against published reference values and an industry numerical library:
 
 1. **Semi-analytic pricing**, with two independent methods: Fourier inversion (Heston's formula, in the "little trap" form) and the COS method (Fang & Oosterlee, 2009).
@@ -132,6 +134,7 @@ The confidence intervals come from a paired bootstrap: all hedges run on the sam
 
 ```bash
 pip install -r requirements.txt
+python -m pytest       # 5 automated validation tests
 python run_study.py
 python run_hedging.py
 ```
