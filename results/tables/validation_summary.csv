@@ -1,0 +1,10 @@
+check,value
+"Fourier vs Fang-Oosterlee, T = 1",-1.571076335693533e-08
+"Fourier vs Fang-Oosterlee, T = 10",-9.67784075101008e-10
+"COS (N = 256) vs Fourier, T = 1",6.069949165521393e-08
+"COS (N = 256) vs Fourier, T = 10",1.1220606666029198e-09
+Put-call parity of Black-Scholes (max error),7.105427357601002e-15
+Barrier under BS: Monte Carlo (daily) minus closed form with BGK correction,-0.03452166086427866
+Barrier under BS: Monte Carlo standard error,0.03269570105516755
+Heston 1y ATM implied volatility (r = 2.5%),0.15137746665087617
+dC/dv0 at the NAG point (NAG 'vega' 52.5461),52.54611063584085

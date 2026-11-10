@@ -1,0 +1,65 @@
+Semi-analytic validation
+                                        case  reference   fourier  cos_N256  fourier_minus_reference  cos_minus_fourier
+ Call, T = 1, r = 0 (Fang & Oosterlee, 2009)   5.785155  5.785155  5.785155            -1.571076e-08       6.069949e-08
+Call, T = 10, r = 0 (Fang & Oosterlee, 2009)  22.318946 22.318946 22.318946            -9.677841e-10       1.122061e-09
+
+Greeks vs NAG
+quantity  this_project  NAG_library_r_2_5pct
+   Price        7.2743                7.2743
+   Delta        0.6945                0.6945
+   Gamma        0.0251                0.0251
+     Rho       62.1735               62.1735
+
+COS convergence
+  N      error_T1     error_T10
+ 64 -6.244867e-03 -3.148608e-03
+ 96 -3.299350e-03  9.597885e-06
+128 -4.060595e-04  9.244436e-07
+160  7.455040e-06 -3.294693e-08
+192  1.307901e-05  1.814712e-09
+256  6.069949e-08  1.122061e-09
+
+MC bias
+               scheme  steps_per_year  price   bias  std_error  bias_in_std_errors
+Euler full truncation              12 5.9518 0.1666     0.0116             14.3544
+          Andersen QE              12 5.7903 0.0051     0.0114              0.4507
+Euler full truncation              26 5.8532 0.0680     0.0114              5.9714
+          Andersen QE              26 5.7915 0.0063     0.0113              0.5594
+Euler full truncation              52 5.8046 0.0194     0.0113              1.7201
+          Andersen QE              52 5.7872 0.0020     0.0113              0.1784
+Euler full truncation             252 5.7974 0.0122     0.0113              1.0867
+          Andersen QE             252 5.7998 0.0147     0.0113              1.2998
+
+Variance reduction
+                      method  price  std_error  variance_reduction_factor
+           Plain Monte Carlo 5.7789     0.0180                     1.0000
+                  Antithetic 5.8140     0.0149                     1.4651
+Antithetic + control variate 5.7904     0.0113                     2.5439
+
+Validation summary
+                                                                      check         value
+                                           Fourier vs Fang-Oosterlee, T = 1 -1.571076e-08
+                                          Fourier vs Fang-Oosterlee, T = 10 -9.677841e-10
+                                            COS (N = 256) vs Fourier, T = 1  6.069949e-08
+                                           COS (N = 256) vs Fourier, T = 10  1.122061e-09
+                               Put-call parity of Black-Scholes (max error)  7.105427e-15
+Barrier under BS: Monte Carlo (daily) minus closed form with BGK correction -3.452166e-02
+                               Barrier under BS: Monte Carlo standard error  3.269570e-02
+                                Heston 1y ATM implied volatility (r = 2.5%)  1.513775e-01
+                               dC/dv0 at the NAG point (NAG 'vega' 52.5461)  5.254611e+01
+Barrier MC 7.1812 vs closed form (BGK) 7.2158
+
+Calibration
+                       start  kappa  theta  sigma     rho     v0  rmse_vol_points  seconds
+[2.5, 0.06, 0.3, -0.2, 0.03] 1.4376 0.0409 0.5636 -0.5601 0.0180           0.1847   0.1606
+[0.8, 0.03, 0.8, -0.8, 0.01] 1.3770 0.0415 0.5599 -0.5613 0.0181           0.1841   0.2543
+[4.0, 0.05, 0.5, -0.5, 0.02] 1.9243 0.0382 0.6280 -0.5632 0.0172           0.2194   0.1712
+             TRUE PARAMETERS 1.5768 0.0398 0.5751 -0.5711 0.0175              NaN      NaN
+
+Exotics
+                                   product  heston  heston_se  black_scholes_flat_vol  difference_pct
+                   European call (K = 100)  7.2719     0.0159                  7.2812         -0.0013
+Down-and-out call (K = 100, B = 80, daily)  7.1230     0.0159                  7.2758         -0.0210
+ Down-and-in call (K = 100, B = 80, daily)  0.1490     0.0038                  0.0055         26.1846
+      Asian call, daily arithmetic average  3.8926     0.0080                  4.0949         -0.0494
+             Out-of-the-money put (K = 80)  1.0515     0.0102                  0.2795          2.7613
