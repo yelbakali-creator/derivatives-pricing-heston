@@ -90,16 +90,18 @@ The two models agree on the at-the-money call **by construction** (the same impl
 
 The world is simulated with Heston (2,000 paths, QE). A trader sells a 1-year at-the-money call at its Heston price (7.27) and rebalances the delta hedge daily.
 
-| Hedge | SD of hedging P&L | As % of premium | Variance vs Black-Scholes hedge |
+| Hedge | SD of hedging P&L | As % of premium | Variance vs Black-Scholes hedge (95% CI) |
 |---|---|---|---|
 | Black-Scholes delta (1y ATM implied vol) | 3.03 | 41.6% | 1.00 |
-| Heston model delta | 3.08 | 42.4% | 1.04 |
-| **Heston minimum-variance delta** | **2.60** | **35.8%** | **0.74** |
+| Heston model delta | 3.08 | 42.4% | 1.04 (0.92 - 1.17) |
+| **Heston minimum-variance delta** | **2.60** | **35.8%** | **0.74 (0.67 - 0.82)** |
+
+The confidence intervals come from a paired bootstrap: all hedges run on the same paths, which are resampled together.
 
 ![Delta hedging](results/figures/delta_hedging.png)
 
-- **The Heston "model delta" does not beat Black-Scholes.** It holds variance fixed when the spot moves, but with rho = -0.57, variance rises when the spot falls.
-- **The minimum-variance delta corrects for this:** Delta_MV = Delta + (rho sigma / S) dC/dv. It cuts the hedging variance by 26%.
+- **The Heston "model delta" is no better than Black-Scholes.** The difference is not statistically significant (the interval contains 1). The model delta holds variance fixed when the spot moves, but with rho = -0.57, variance rises when the spot falls.
+- **The minimum-variance delta corrects for this:** Delta_MV = Delta + (rho sigma / S) dC/dv. It cuts the hedging variance by 26%, a significant gain (interval 0.67 - 0.82).
 - **Even the best delta leaves 36% of the premium unhedged.** That is volatility risk, which the underlying alone cannot hedge. Hedging it needs a second option (vega hedging).
 
 ## Method notes

@@ -47,7 +47,16 @@ def main():
     # Paired comparison on the same paths: variance reduction of each hedge vs the Black-Scholes hedge
     base = pnl[labels[0]]
     hedge["variance_vs_black_scholes"] = [np.var(pnl[k]) / np.var(base) for k in labels]
+    # Paired bootstrap (same resampled paths for both hedges): 95% interval of each variance ratio
+    boot_rng = np.random.default_rng(11)
+    idx = boot_rng.integers(0, N_PATHS, (5000, N_PATHS))
+    lo, hi = [], []
+    for k in labels:
+        ratios = np.var(pnl[k][idx], axis=1) / np.var(base[idx], axis=1)
+        lo.append(np.quantile(ratios, 0.025)); hi.append(np.quantile(ratios, 0.975))
+    hedge["ratio_ci_low"], hedge["ratio_ci_high"] = lo, hi
     hedge.to_csv(TABLES / "delta_hedging.csv", index=False)
+    pd.DataFrame(pnl).to_csv(TABLES / "delta_hedging_pnl_by_path.csv", index=False)
 
     fig, ax = plt.subplots(figsize=(7.5, 4))
     bins = np.linspace(-8, 6, 80)
